@@ -1,16 +1,20 @@
 class WikiDBPost {
-  WikiDBPost(this.title, this.description, this.imgUrl);
+  WikiDBPost(this.pageId, this.title, this.description, this.imgUrl);
 
   WikiDBPost.fromMap(Map snapshot)
-      : title = snapshot['title'],
+      : 
+      pageId = snapshot ['pageId'] == null ? 0 : snapshot['pageId'],
+      title = snapshot['title'],
         description =
             snapshot['description'] == null ? 'n/a' : snapshot['description'],
         imgUrl = snapshot['thumbnailUrl'];
 
+
   final String title;
   final String description;
   final String imgUrl;
+  final num pageId;
 
   toJson() =>
-      {'title': title, 'description': description, 'thumbnailUrl': imgUrl};
+      {'pageId': pageId,'title': title, 'description': description, 'thumbnailUrl': imgUrl};
 }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as prefix0;
 import 'package:http/http.dart' as http;
 import 'package:kpedia/src/models/wiki_dbPost.dart';
 import 'package:kpedia/src/models/wiki_post_model.dart';
@@ -12,17 +13,22 @@ class HomeWidget extends StatefulWidget {
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
+  final GlobalKey<ScaffoldState> _scKey = new GlobalKey<ScaffoldState>();
+
+  
   List<WikiDBPost> dbPosts;
   DatabaseService _db = DatabaseService();
   final String apiUrl =
       'https://en.wikipedia.org/api/rest_v1/page/related/kurd';
+  
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Wikipedia in kurdish'),
+      title: Text('Wikipedia in kurdish'),
       ),
+      key: _scKey,
       body: Container(
         alignment: Alignment.center,
         child: Column(
@@ -110,9 +116,15 @@ class _HomeWidgetState extends State<HomeWidget> {
             icon: Icon(Icons.save),
             onPressed: () {
               bool duplicate = false;
-              dbPosts.forEach((f) {
-                if (f.title == thePost.pages[i].title) {
+              dbPosts.forEach((singlePostFromWiki) {
+                if (singlePostFromWiki.pageId == thePost.pages[i].pageid) {
                   duplicate = true;
+                  _scKey.currentState.showSnackBar(
+                  SnackBar(
+                    content: Text("this item this duplicated!"), 
+                    duration : Duration(seconds: 3)
+                    ));
+                  return;
                 }
               });
               duplicate == false
@@ -120,7 +132,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                       {
                         'title': thePost.pages[i].title,
                         'description': thePost.pages[i].description,
-                        'thumbnailUrl': thePost.pages[i].thumbnail.source
+                        'thumbnailUrl': thePost.pages[i].thumbnail.source,
+                        'pageId' : thePost.pages[i].pageid
                       },
                     )
                   : debugPrint('Duplicate');
