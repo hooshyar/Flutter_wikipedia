@@ -13,8 +13,6 @@ class HomeWidget extends StatefulWidget {
 
 class _HomeWidgetState extends State<HomeWidget> {
   List<WikiDBPost> dbPosts;
-  String _theText = 'Hama';
-  String _nextText = '232';
   DatabaseService _db = DatabaseService();
   final String apiUrl =
       'https://en.wikipedia.org/api/rest_v1/page/related/kurd';
@@ -84,36 +82,6 @@ class _HomeWidgetState extends State<HomeWidget> {
                     }
                   },
                 ),
-
-//                FutureBuilder(
-//                  future: _db.fetchData(),
-//                  builder: (context, snapshot) {
-//                    if (!snapshot.hasData) {
-//                      return CircularProgressIndicator();
-//                    } else {
-//                      List<WikiDBPost> posts = snapshot.data;
-//
-//                      debugPrint('hasdata : + ${snapshot.data.toString()}');
-//
-//                      return ListView.builder(
-//                          itemCount: snapshot.data.length,
-//                          itemBuilder: (context, i) {
-//                            return Padding(
-//                              padding: const EdgeInsets.all(8.0),
-//                              child: Column(
-//                                mainAxisAlignment:
-//                                    MainAxisAlignment.spaceBetween,
-//                                children: <Widget>[
-//                                  Text(posts[i].title),
-//                                  Text(posts[i].description),
-//                                  Image.network(posts[i].imgUrl),
-//                                ],
-//                              ),
-//                            );
-//                          });
-//                    }
-//                  },
-//                ),
               ),
             )
           ],
@@ -174,8 +142,6 @@ class _HomeWidgetState extends State<HomeWidget> {
     Map postMaps = await _get(_endpoint);
     print(_endpoint);
     var xali;
-//    List<WikiPost> posts = new List();
-//    posts = postMaps.map((postMap) => new WikiPost.fromMap(postMap)).toList();
     xali = WikiPost.fromMap(postMaps);
     debugPrint(xali.toString());
     return xali;
@@ -200,7 +166,6 @@ class _HomeWidgetState extends State<HomeWidget> {
     }
 
     if (jsonObj is List) {
-      // This is needed for Dart 2 type constraints
       return jsonObj.map((item) => item as Map).toList();
     } else {
       debugPrint('json obj is not a list');
